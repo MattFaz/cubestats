@@ -13,8 +13,8 @@ export default defineNitroPlugin(() => {
   if (!config.authPass || INSECURE_PASSWORDS.has(config.authPass.toLowerCase())) {
     problems.push('NUXT_AUTH_PASS is unset or using a default/insecure value')
   }
-  if (!config.databaseUrl) {
-    problems.push('NUXT_DATABASE_URL is unset')
+  if (!config.databasePath) {
+    problems.push('NUXT_DATABASE_PATH is unset')
   }
 
   if (problems.length > 0) {

@@ -1,1 +1,0 @@
-ALTER TABLE "solves" ALTER COLUMN "import_id" DROP NOT NULL;

@@ -94,75 +94,68 @@ A self-hosted stats viewer for [csTimer](https://cstimer.net) exports. Import yo
 
 ## Stack
 
-Nuxt 4 · Vue 3 · Pinia · Nuxt UI 4 · Tailwind · Postgres + Drizzle ORM · Chart.js · Vitest
+Nuxt 4 · Vue 3 · Pinia · Nuxt UI 4 · Tailwind · SQLite + Drizzle ORM · Chart.js · Vitest
 
-## Quick start (Docker Compose)
+## Quick start (Docker)
 
-Save the snippet below as `docker-compose.yml`, fill in the auth values, then run `docker compose up -d` and open <http://localhost:3000>.
+Single-container, no compose required. Pick a password and a long random secret:
+
+```bash
+docker run -d --name cubestats \
+  -p 3000:3000 \
+  -v cubestats-data:/app/data \
+  -e NUXT_AUTH_USER=admin \
+  -e NUXT_AUTH_PASS='<your-login-password>' \
+  -e NUXT_AUTH_SECRET='<a-long-random-string>' \
+  --restart unless-stopped \
+  mattyfaz/cubestats:latest
+```
+
+Open <http://localhost:3000>, log in, then drop a csTimer export onto the Import page.
+
+### Or with Docker Compose
 
 ```yml
 services:
-  app:
+  cubestats:
     image: mattyfaz/cubestats:latest
     ports:
       - 3000:3000
     environment:
-      - DATABASE_URL=postgres://cubestats:cubestats@postgres:5432/cubestats
-      - NUXT_DATABASE_URL=postgres://cubestats:cubestats@postgres:5432/cubestats
       - NUXT_AUTH_USER=admin
-      - NUXT_AUTH_PASS=<your-login-password>           # required — server refuses to boot with "changeme", "admin", or "password"
-      - NUXT_AUTH_SECRET=<a-long-random-string>        # required — must not start with "change-this", "dev-secret", or "changeme"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    restart: unless-stopped
-
-  postgres:
-    image: postgres:16-alpine
-    environment:
-      - POSTGRES_DB=cubestats
-      - POSTGRES_USER=cubestats
-      - POSTGRES_PASSWORD=cubestats
+      - NUXT_AUTH_PASS=<your-login-password>     # required — server refuses to boot with "changeme", "admin", or "password"
+      - NUXT_AUTH_SECRET=<a-long-random-string>  # required — must not start with "change-this", "dev-secret", or "changeme"
     volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U cubestats"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - cubestats-data:/app/data
     restart: unless-stopped
 
 volumes:
-  pgdata:
+  cubestats-data:
 ```
 
-Log in with the credentials you set, then drop a csTimer export onto the Import page.
-
-The image is published to [Docker Hub](https://hub.docker.com/r/mattyfaz/cubestats) and [GHCR](https://github.com/MattFaz/cubestats/pkgs/container/cubestats) for `linux/amd64` and `linux/arm64`.
+The image is published to [Docker Hub](https://hub.docker.com/r/mattyfaz/cubestats) and [GHCR](https://github.com/MattFaz/cubestats/pkgs/container/cubestats) for `linux/amd64` and `linux/arm64`. Your data lives in the `cubestats-data` volume — back up `cubestats.db` from inside it to keep your solves safe.
 
 ## Local development
 
-Requires Node 22+ and a running Postgres.
+Requires Node 22+. Database is a local SQLite file — no external services needed.
 
 ```bash
 npm install
 cp .env.example .env
-# Edit .env to point at your Postgres
-npm run db:migrate
+# Edit .env — set NUXT_AUTH_PASS / NUXT_AUTH_SECRET to anything
+npm run db:migrate    # creates data/cubestats.db
 npm run dev
 ```
 
 ## Environment variables
 
-| Var                 | Required | Notes                                                                                        |
-| ------------------- | -------- | -------------------------------------------------------------------------------------------- |
-| `NUXT_DATABASE_URL` | yes      | Postgres connection string                                                                   |
-| `NUXT_AUTH_USER`    | yes      | Login username                                                                               |
-| `NUXT_AUTH_PASS`    | yes      | Login password — refuses to start in production with default `changeme`                      |
-| `NUXT_AUTH_SECRET`  | yes      | HMAC secret for the session cookie — refuses to start in production with default placeholder |
-| `APP_PORT`          | no       | Defaults to `3000`                                                                           |
-
-The Docker Compose setup additionally reads `POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD` to configure the `postgres` service — see `.env.example`.
+| Var                  | Required | Notes                                                                                        |
+| -------------------- | -------- | -------------------------------------------------------------------------------------------- |
+| `NUXT_AUTH_USER`     | yes      | Login username                                                                               |
+| `NUXT_AUTH_PASS`     | yes      | Login password — refuses to start in production with `changeme`, `admin`, or `password`      |
+| `NUXT_AUTH_SECRET`   | yes      | HMAC secret for the session cookie — refuses to start in production with placeholder values  |
+| `NUXT_DATABASE_PATH` | no       | SQLite file path. Defaults to `data/cubestats.db` (locally) or `/app/data/cubestats.db` (in the docker image) |
+| `APP_PORT`           | no       | Defaults to `3000`                                                                           |
 
 ## Exporting from csTimer
 

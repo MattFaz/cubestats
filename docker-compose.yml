@@ -4,34 +4,12 @@ services:
     ports:
       - "${APP_PORT:-3000}:3000"
     environment:
-      # DATABASE_URL is for drizzle-kit migrations at startup (older images);
-      # newer images also read NUXT_DATABASE_URL, but we set both for compatibility.
-      - DATABASE_URL=postgres://${POSTGRES_USER:-cubestats}:${POSTGRES_PASSWORD:-cubestats}@postgres:5432/${POSTGRES_DB:-cubestats}
-      - NUXT_DATABASE_URL=postgres://${POSTGRES_USER:-cubestats}:${POSTGRES_PASSWORD:-cubestats}@postgres:5432/${POSTGRES_DB:-cubestats}
       - NUXT_AUTH_USER=${NUXT_AUTH_USER:-admin}
       - NUXT_AUTH_PASS=${NUXT_AUTH_PASS:?set NUXT_AUTH_PASS in .env}
       - NUXT_AUTH_SECRET=${NUXT_AUTH_SECRET:?set NUXT_AUTH_SECRET in .env}
-    depends_on:
-      postgres:
-        condition: service_healthy
-    restart: unless-stopped
-
-  postgres:
-    image: postgres:16-alpine
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB:-cubestats}
-      - POSTGRES_USER=${POSTGRES_USER:-cubestats}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-cubestats}
     volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cubestats}" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - cubestats-data:/app/data
     restart: unless-stopped
 
 volumes:
-  pgdata:
+  cubestats-data:

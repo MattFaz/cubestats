@@ -11,13 +11,13 @@ export default defineEventHandler(async (event) => {
 
   const where = and(...conditions)
 
-  const hourExpr = sql`EXTRACT(HOUR FROM "solves"."solved_at")::int`
+  const hourExpr = sql`CAST(strftime('%H', "solves"."solved_at", 'unixepoch') AS INTEGER)`
 
   const rows = await db
     .select({
       hour: sql<number>`${hourExpr}`.as('hour'),
-      avgMs: sql<number>`AVG("solves"."time_ms")::int`.as('avg_ms'),
-      count: sql<number>`COUNT(*)::int`.as('count'),
+      avgMs: sql<number>`CAST(AVG("solves"."time_ms") AS INTEGER)`.as('avg_ms'),
+      count: sql<number>`COUNT(*)`.as('count'),
     })
     .from(schema.solves)
     .where(where)

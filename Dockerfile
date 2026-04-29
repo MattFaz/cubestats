@@ -1,5 +1,6 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
+RUN apk add --no-cache python3 make g++
 COPY package.json package-lock.json ./
 RUN npm ci
 
@@ -18,6 +19,8 @@ COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/drizzle.config.ts ./drizzle.config.ts
 
 ENV NODE_ENV=production
+ENV NUXT_DATABASE_PATH=/app/data/cubestats.db
 EXPOSE 3000
+VOLUME /app/data
 
-CMD ["sh", "-c", "npx drizzle-kit migrate && node .output/server/index.mjs"]
+CMD ["sh", "-c", "mkdir -p /app/data && npx drizzle-kit migrate && node .output/server/index.mjs"]

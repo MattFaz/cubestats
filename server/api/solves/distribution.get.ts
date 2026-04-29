@@ -13,12 +13,12 @@ export default defineEventHandler(async (event) => {
   const where = and(...conditions)
 
   const safeBucket = Math.max(500, Math.min(60000, Math.round(bucketSize)))
-  const bucketExpr = sql.raw(`FLOOR("solves"."time_ms" / ${safeBucket}) * ${safeBucket}`)
+  const bucketExpr = sql.raw(`(("solves"."time_ms" / ${safeBucket}) * ${safeBucket})`)
 
   const rows = await db
     .select({
       bucketStart: sql<number>`${bucketExpr}`.as('bucket_start'),
-      count: sql<number>`COUNT(*)::int`.as('count'),
+      count: sql<number>`COUNT(*)`.as('count'),
     })
     .from(schema.solves)
     .where(where)

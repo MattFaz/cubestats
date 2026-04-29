@@ -1,1 +1,0 @@
-CREATE UNIQUE INDEX "goals_metric_unique_idx" ON "goals" USING btree ("metric");

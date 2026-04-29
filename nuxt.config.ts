@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
-    databaseUrl: '',
+    databasePath: 'data/cubestats.db',
     authUser: 'admin',
     authPass: 'changeme',
     authSecret: 'dev-secret-change-me',

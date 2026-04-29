@@ -11,12 +11,12 @@ export default defineEventHandler(async (event) => {
   const conditions = [gte(schema.solves.solvedAt, oneYearAgo)]
   if (query.puzzle_type) conditions.push(eq(schema.solves.puzzleType, String(query.puzzle_type)))
 
-  const dateExpr = sql`TO_CHAR("solves"."solved_at", 'YYYY-MM-DD')`
+  const dateExpr = sql`strftime('%Y-%m-%d', "solves"."solved_at", 'unixepoch')`
 
   const rows = await db
     .select({
       date: sql<string>`${dateExpr}`.as('date'),
-      count: sql<number>`COUNT(*)::int`.as('count'),
+      count: sql<number>`COUNT(*)`.as('count'),
     })
     .from(schema.solves)
     .where(and(...conditions))

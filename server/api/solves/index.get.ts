@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
     .limit(limit)
     .offset(offset)
 
-  const [{ count: total }] = await db.select({ count: sql`count(*)::int` })
+  const [{ count: total }] = await db.select({ count: sql<number>`count(*)` })
     .from(schema.solves)
     .where(where)
 

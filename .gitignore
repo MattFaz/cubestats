@@ -31,6 +31,9 @@ logs
 *.db
 .beads-credential-key
 
+# SQLite database (runtime data) and WAL sidecars
+data/
+
 # Local csTimer exports
 exports/
 

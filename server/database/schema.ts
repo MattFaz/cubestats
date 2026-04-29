@@ -1,42 +1,55 @@
-import { pgTable, serial, varchar, text, integer, timestamp, uniqueIndex } from 'drizzle-orm/pg-core'
+import { sqliteTable, integer, text, uniqueIndex } from 'drizzle-orm/sqlite-core'
+import { sql } from 'drizzle-orm'
 
-export const imports = pgTable('imports', {
-  id: serial('id').primaryKey(),
-  filename: varchar('filename', { length: 255 }).notNull(),
+export const imports = sqliteTable('imports', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  filename: text('filename').notNull(),
   rawJson: text('raw_json').notNull(),
   solvesAdded: integer('solves_added').notNull().default(0),
   solvesSkipped: integer('solves_skipped').notNull().default(0),
-  importedAt: timestamp('imported_at').notNull().defaultNow(),
+  importedAt: integer('imported_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(unixepoch())`),
 })
 
-export const sessions = pgTable('sessions', {
-  id: serial('id').primaryKey(),
-  sessionKey: varchar('session_key', { length: 50 }).notNull().unique(),
-  displayName: varchar('display_name', { length: 255 }).notNull(),
-  puzzleType: varchar('puzzle_type', { length: 20 }).notNull().default('333'),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
+export const sessions = sqliteTable('sessions', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  sessionKey: text('session_key').notNull().unique(),
+  displayName: text('display_name').notNull(),
+  puzzleType: text('puzzle_type').notNull().default('333'),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(unixepoch())`),
 })
 
-export const solves = pgTable('solves', {
-  id: serial('id').primaryKey(),
-  sessionId: integer('session_id').notNull().references(() => sessions.id),
-  importId: integer('import_id').references(() => imports.id),
-  timeMs: integer('time_ms').notNull(),
-  penalty: varchar('penalty', { length: 10 }).notNull().default('none'),
-  scramble: text('scramble').notNull(),
-  comment: text('comment'),
-  solvedAt: timestamp('solved_at').notNull(),
-  moveHistory: text('move_history'),
-  puzzleType: varchar('puzzle_type', { length: 20 }).notNull().default('333'),
-}, (table) => [
-  uniqueIndex('solve_dedup_idx').on(table.sessionId, table.solvedAt, table.scramble),
-])
+export const solves = sqliteTable(
+  'solves',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    sessionId: integer('session_id')
+      .notNull()
+      .references(() => sessions.id),
+    importId: integer('import_id').references(() => imports.id),
+    timeMs: integer('time_ms').notNull(),
+    penalty: text('penalty').notNull().default('none'),
+    scramble: text('scramble').notNull(),
+    comment: text('comment'),
+    solvedAt: integer('solved_at', { mode: 'timestamp' }).notNull(),
+    moveHistory: text('move_history'),
+    puzzleType: text('puzzle_type').notNull().default('333'),
+  },
+  (table) => [uniqueIndex('solve_dedup_idx').on(table.sessionId, table.solvedAt, table.scramble)],
+)
 
-export const goals = pgTable('goals', {
-  id: serial('id').primaryKey(),
-  metric: varchar('metric', { length: 20 }).notNull(),
-  targetMs: integer('target_ms').notNull(),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-}, (table) => [
-  uniqueIndex('goals_metric_unique_idx').on(table.metric),
-])
+export const goals = sqliteTable(
+  'goals',
+  {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    metric: text('metric').notNull(),
+    targetMs: integer('target_ms').notNull(),
+    createdAt: integer('created_at', { mode: 'timestamp' })
+      .notNull()
+      .default(sql`(unixepoch())`),
+  },
+  (table) => [uniqueIndex('goals_metric_unique_idx').on(table.metric)],
+)
