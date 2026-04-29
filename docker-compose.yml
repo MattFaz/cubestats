@@ -4,7 +4,6 @@ services:
     ports:
       - "${APP_PORT:-3000}:3000"
     environment:
-      - NUXT_AUTH_USER=${NUXT_AUTH_USER:-admin}
       - NUXT_AUTH_PASS=${NUXT_AUTH_PASS:?set NUXT_AUTH_PASS in .env}
       - NUXT_AUTH_SECRET=${NUXT_AUTH_SECRET:?set NUXT_AUTH_SECRET in .env}
     volumes:

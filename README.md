@@ -104,8 +104,7 @@ Single-container, no compose required. Pick a password and a long random secret:
 docker run -d --name cubestats \
   -p 3000:3000 \
   -v cubestats-data:/app/data \
-  -e NUXT_AUTH_USER=admin \
-  -e NUXT_AUTH_PASS='<your-login-password>' \
+  -e NUXT_AUTH_PASS='<your-password>' \
   -e NUXT_AUTH_SECRET='<a-long-random-string>' \
   --restart unless-stopped \
   mattyfaz/cubestats:latest
@@ -122,8 +121,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      - NUXT_AUTH_USER=admin
-      - NUXT_AUTH_PASS=<your-login-password>     # required — server refuses to boot with "changeme", "admin", or "password"
+      - NUXT_AUTH_PASS=<your-password>           # required — server refuses to boot with "changeme", "admin", or "password"
       - NUXT_AUTH_SECRET=<a-long-random-string>  # required — must not start with "change-this", "dev-secret", or "changeme"
     volumes:
       - cubestats-data:/app/data
@@ -151,7 +149,6 @@ npm run dev
 
 | Var                  | Required | Notes                                                                                        |
 | -------------------- | -------- | -------------------------------------------------------------------------------------------- |
-| `NUXT_AUTH_USER`     | yes      | Login username                                                                               |
 | `NUXT_AUTH_PASS`     | yes      | Login password — refuses to start in production with `changeme`, `admin`, or `password`      |
 | `NUXT_AUTH_SECRET`   | yes      | HMAC secret for the session cookie — refuses to start in production with placeholder values  |
 | `NUXT_DATABASE_PATH` | no       | SQLite file path. Defaults to `data/cubestats.db` (locally) or `/app/data/cubestats.db` (in the docker image) |

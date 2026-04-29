@@ -5,10 +5,10 @@ export const useAuthStore = defineStore('auth', {
     isLoggedIn: false,
   }),
   actions: {
-    async login(username: string, password: string) {
+    async login(password: string) {
       const res = await $fetch('/api/auth/login', {
         method: 'POST',
-        body: { username, password },
+        body: { password },
       })
       this.isLoggedIn = true
       return res
