@@ -46,7 +46,7 @@ A self-hosted stats viewer for [csTimer](https://cstimer.net) exports. Import yo
 </td>
 <td width="50%">
 
-**History** — searchable solve table with penalty editing
+**History** — searchable solve table with delete
 <picture>
 
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/history-dark.png">
@@ -82,7 +82,7 @@ A self-hosted stats viewer for [csTimer](https://cstimer.net) exports. Import yo
 ## Features
 
 - **Dashboard** — best/avg5/avg12/avg100 with live filters by session and puzzle type
-- **History** — searchable, sortable solve table with penalty editing
+- **History** — searchable, sortable solve table with row-level delete
 - **Analytics** — solve-time distribution, calendar heatmap, time-of-day breakdown
 - **Trends** — rolling averages and session comparisons over time
 - **Sessions** — per-session detail pages
