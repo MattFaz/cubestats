@@ -93,7 +93,15 @@ A self-hosted stats viewer for [csTimer](https://cstimer.net) exports. Import yo
 - **Multi-puzzle** — 2x2 through 7x7, megaminx, pyraminx, skewb, square-1
 - **Light & dark mode**
 
+## Heads up
+
+cubestats is **single-user** — there's one password and one set of stats. There is no per-user separation, no audit log, no rate limiting on login. Run it on your home network, behind a VPN like [Tailscale](https://tailscale.com), or behind a reverse proxy that handles TLS and access control. Don't expose it directly to the public internet without something in front of it.
+
+If `NUXT_AUTH_PASS` or `NUXT_AUTH_SECRET` look like defaults (`changeme`, `admin`, `password`, anything starting with `change-this` / `dev-secret` / `changeme`), the server refuses to boot — to make sure you set real values before going live.
+
 ## Quick start (Docker)
+
+Multi-arch images are published for `linux/amd64` and `linux/arm64`, so a Raspberry Pi 4/5 works out of the box.
 
 Single-container, no compose required. Pick a password and a long random secret:
 
@@ -128,7 +136,19 @@ volumes:
   cubestats-data:
 ```
 
-The image is published to [Docker Hub](https://hub.docker.com/r/mattyfaz/cubestats) and [GHCR](https://github.com/MattFaz/cubestats/pkgs/container/cubestats) for `linux/amd64` and `linux/arm64`. Your data lives in the `cubestats-data` volume — back up `cubestats.db` from inside it to keep your solves safe.
+The image is published to [Docker Hub](https://hub.docker.com/r/mattyfaz/cubestats) and [GHCR](https://github.com/MattFaz/cubestats/pkgs/container/cubestats). Your data lives in the `cubestats-data` volume — back up `cubestats.db` from inside it to keep your solves safe.
+
+### Updating
+
+```bash
+# docker run
+docker pull mattyfaz/cubestats:latest && docker rm -f cubestats && <re-run the docker run command above>
+
+# docker compose
+docker compose pull && docker compose up -d
+```
+
+Migrations run automatically on container start. The published `:latest` tag follows the most recent release; pin to a specific tag (e.g. `mattyfaz/cubestats:v1.03`) if you want to control upgrades manually. Container health is exposed at `/api/health` (no auth required) — a status that reverse proxies and `docker ps` can use.
 
 ## Local development
 

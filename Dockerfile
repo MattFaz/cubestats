@@ -23,4 +23,7 @@ ENV NUXT_DATABASE_PATH=/app/data/cubestats.db
 EXPOSE 3000
 VOLUME /app/data
 
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1
+
 CMD ["sh", "-c", "mkdir -p /app/data && npx drizzle-kit migrate && node .output/server/index.mjs"]
