@@ -2,7 +2,82 @@
 
 A self-hosted stats viewer for [csTimer](https://cstimer.net) exports. Import your csTimer JSON, browse your solve history, and see deeper analytics than the built-in views.
 
-> Single-user by design. Run it for yourself; not a multi-tenant service. Not affiliated with csTimer.
+> Not affiliated with csTimer.
+
+<picture>
+  <img alt="Dashboard" src="docs/screenshots/dashboard.png">
+</picture>
+
+## Screenshots
+
+<table>
+<tr>
+<td width="50%">
+
+**Analytics** — distribution, calendar heatmap, time-of-day
+<picture>
+
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/analytics-dark.png">
+  <img alt="Analytics" src="docs/screenshots/analytics-light.png">
+</picture>
+
+</td>
+<td width="50%">
+
+**Trends** — rolling averages and week-over-week
+<picture>
+
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/trends-dark.png">
+  <img alt="Trends" src="docs/screenshots/trends-light.png">
+</picture>
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+**Timer** — WCA scrambles, hold-to-start
+<picture>
+
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/timer-dark.png">
+  <img alt="Timer" src="docs/screenshots/timer-light.png">
+</picture>
+
+</td>
+<td width="50%">
+
+**History** — searchable solve table with penalty editing
+<picture>
+
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/history-dark.png">
+  <img alt="History" src="docs/screenshots/history-light.png">
+</picture>
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+**Sessions** — per-session detail and stats
+<picture>
+
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/session-detail-dark.png">
+  <img alt="Session detail" src="docs/screenshots/session-detail-light.png">
+</picture>
+
+</td>
+<td width="50%">
+
+**Import / Export** — drag-and-drop csTimer JSON
+<picture>
+
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/import-dark.png">
+  <img alt="Import / Export" src="docs/screenshots/import-light.png">
+</picture>
+
+</td>
+</tr>
+</table>
 
 ## Features
 
@@ -48,13 +123,13 @@ npm run dev
 
 ## Environment variables
 
-| Var | Required | Notes |
-|-|-|-|
-| `NUXT_DATABASE_URL` | yes | Postgres connection string |
-| `NUXT_AUTH_USER` | yes | Login username |
-| `NUXT_AUTH_PASS` | yes | Login password — refuses to start in production with default `changeme` |
-| `NUXT_AUTH_SECRET` | yes | HMAC secret for the session cookie — refuses to start in production with default placeholder |
-| `APP_PORT` | no | Defaults to `3000` |
+| Var                 | Required | Notes                                                                                        |
+| ------------------- | -------- | -------------------------------------------------------------------------------------------- |
+| `NUXT_DATABASE_URL` | yes      | Postgres connection string                                                                   |
+| `NUXT_AUTH_USER`    | yes      | Login username                                                                               |
+| `NUXT_AUTH_PASS`    | yes      | Login password — refuses to start in production with default `changeme`                      |
+| `NUXT_AUTH_SECRET`  | yes      | HMAC secret for the session cookie — refuses to start in production with default placeholder |
+| `APP_PORT`          | no       | Defaults to `3000`                                                                           |
 
 The Docker Compose setup also reads non-prefixed `DATABASE_URL`, `AUTH_USER`, `AUTH_PASS`, `AUTH_SECRET`, `POSTGRES_*` for convenience — see `.env.example`.
 
