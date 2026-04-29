@@ -1,0 +1,39 @@
+{
+  "name": "cubestats",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "dependencies": {
+    "@nuxt/ui": "^4.6.1",
+    "@pinia/nuxt": "^0.11.3",
+    "chart.js": "^4.5.1",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "crossws": "^0.4.4",
+    "cubing": "^0.63.3",
+    "date-fns": "^4.1.0",
+    "drizzle-kit": "^0.31.10",
+    "drizzle-orm": "^0.45.2",
+    "nuxt": "^4.4.2",
+    "postgres": "^3.4.8",
+    "vue": "^3.5.31",
+    "vue-chartjs": "^5.3.3",
+    "vue-router": "^5.0.4"
+  },
+  "devDependencies": {
+    "@nuxt/test-utils": "^4.0.0",
+    "@types/node": "^25.5.2",
+    "vitest": "^4.1.2"
+  }
+}

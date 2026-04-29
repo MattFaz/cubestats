@@ -1,0 +1,47 @@
+<script setup lang="ts">
+const props = defineProps<{
+  solves: any[]
+  compact?: boolean
+}>()
+
+function formatTime(ms: number, penalty: string): string {
+  if (penalty === 'dnf') return 'DNF'
+  const effective = penalty === 'plus2' ? ms + 2000 : ms
+  const totalSeconds = effective / 1000
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = (totalSeconds % 60).toFixed(2)
+  const time = minutes > 0 ? `${minutes}:${seconds.padStart(5, '0')}` : seconds
+  return penalty === 'plus2' ? `${time}+` : time
+}
+
+function formatDate(date: string): string {
+  return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+}
+</script>
+
+<template>
+  <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden">
+    <table class="w-full" :class="compact ? 'text-xs' : 'text-sm'">
+      <thead>
+        <tr class="text-xs uppercase text-gray-400 dark:text-gray-500 border-b border-gray-200 dark:border-gray-800">
+          <th class="text-left w-10" :class="compact ? 'px-2 py-1' : 'px-4 py-2'">#</th>
+          <th class="text-left" :class="compact ? 'px-2 py-1' : 'px-4 py-2'">Time</th>
+          <th class="text-left" :class="compact ? 'px-2 py-1' : 'px-4 py-2'">Scramble</th>
+          <th class="text-left" :class="compact ? 'px-2 py-1 w-16' : 'px-4 py-2 w-24'">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(solve, i) in solves"
+          :key="solve.id"
+          class="border-b border-gray-200/50 dark:border-gray-800/50 hover:bg-gray-100/50 dark:hover:bg-gray-800/30"
+        >
+          <td class="text-gray-400 dark:text-gray-500" :class="compact ? 'px-2 py-0.5' : 'px-4 py-2'">{{ i + 1 }}</td>
+          <td class="font-mono font-semibold" :class="compact ? 'px-2 py-0.5' : 'px-4 py-2'">{{ formatTime(solve.timeMs, solve.penalty) }}</td>
+          <td class="text-gray-500 dark:text-gray-400 truncate max-w-xs" :class="compact ? 'px-2 py-0.5' : 'px-4 py-2'">{{ solve.scramble }}</td>
+          <td class="text-gray-400 dark:text-gray-500" :class="compact ? 'px-2 py-0.5' : 'px-4 py-2'">{{ formatDate(solve.solvedAt) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
