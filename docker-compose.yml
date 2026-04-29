@@ -1,14 +1,16 @@
 services:
-  app:
-    build: .
+  cubestats:
+    image: mattyfaz/cubestats:latest
     ports:
       - "${APP_PORT:-3000}:3000"
     environment:
+      # DATABASE_URL is for drizzle-kit migrations at startup (older images);
+      # newer images also read NUXT_DATABASE_URL, but we set both for compatibility.
       - DATABASE_URL=postgres://${POSTGRES_USER:-cubestats}:${POSTGRES_PASSWORD:-cubestats}@postgres:5432/${POSTGRES_DB:-cubestats}
       - NUXT_DATABASE_URL=postgres://${POSTGRES_USER:-cubestats}:${POSTGRES_PASSWORD:-cubestats}@postgres:5432/${POSTGRES_DB:-cubestats}
-      - NUXT_AUTH_USER=${AUTH_USER:-admin}
-      - NUXT_AUTH_PASS=${AUTH_PASS:-changeme}
-      - NUXT_AUTH_SECRET=${AUTH_SECRET:-change-this-to-a-random-string}
+      - NUXT_AUTH_USER=${NUXT_AUTH_USER:-admin}
+      - NUXT_AUTH_PASS=${NUXT_AUTH_PASS:?set NUXT_AUTH_PASS in .env}
+      - NUXT_AUTH_SECRET=${NUXT_AUTH_SECRET:?set NUXT_AUTH_SECRET in .env}
     depends_on:
       postgres:
         condition: service_healthy
@@ -25,7 +27,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cubestats}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cubestats}" ]
       interval: 5s
       timeout: 5s
       retries: 5

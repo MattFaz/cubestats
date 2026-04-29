@@ -5,6 +5,9 @@ export default defineConfig({
   out: './server/database/migrations',
   dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.DATABASE_URL || 'postgres://cubestats:cubestats@localhost:5432/cubestats',
+    url:
+      process.env.NUXT_DATABASE_URL ||
+      process.env.DATABASE_URL ||
+      'postgres://cubestats:cubestats@localhost:5432/cubestats',
   },
 })

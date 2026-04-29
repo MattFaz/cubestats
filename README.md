@@ -98,16 +98,47 @@ Nuxt 4 · Vue 3 · Pinia · Nuxt UI 4 · Tailwind · Postgres + Drizzle ORM · C
 
 ## Quick start (Docker Compose)
 
-```bash
-git clone https://github.com/<your-org>/cubestats.git
-cd cubestats
-cp .env.example .env
-# Edit .env — at minimum, change AUTH_PASS and AUTH_SECRET
-docker compose up -d
-open http://localhost:3000
+Save the snippet below as `docker-compose.yml`, fill in the auth values, then run `docker compose up -d` and open <http://localhost:3000>.
+
+```yml
+services:
+  app:
+    image: mattyfaz/cubestats:latest
+    ports:
+      - 3000:3000
+    environment:
+      - DATABASE_URL=postgres://cubestats:cubestats@postgres:5432/cubestats
+      - NUXT_DATABASE_URL=postgres://cubestats:cubestats@postgres:5432/cubestats
+      - NUXT_AUTH_USER=admin
+      - NUXT_AUTH_PASS=<your-login-password>           # required — server refuses to boot with "changeme", "admin", or "password"
+      - NUXT_AUTH_SECRET=<a-long-random-string>        # required — must not start with "change-this", "dev-secret", or "changeme"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=cubestats
+      - POSTGRES_USER=cubestats
+      - POSTGRES_PASSWORD=cubestats
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cubestats"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  pgdata:
 ```
 
-Log in with the credentials from your `.env`, then drop a csTimer export onto the Import page.
+Log in with the credentials you set, then drop a csTimer export onto the Import page.
+
+The image is published to [Docker Hub](https://hub.docker.com/r/mattyfaz/cubestats) and [GHCR](https://github.com/MattFaz/cubestats/pkgs/container/cubestats) for `linux/amd64` and `linux/arm64`.
 
 ## Local development
 
@@ -131,7 +162,7 @@ npm run dev
 | `NUXT_AUTH_SECRET`  | yes      | HMAC secret for the session cookie — refuses to start in production with default placeholder |
 | `APP_PORT`          | no       | Defaults to `3000`                                                                           |
 
-The Docker Compose setup also reads non-prefixed `DATABASE_URL`, `AUTH_USER`, `AUTH_PASS`, `AUTH_SECRET`, `POSTGRES_*` for convenience — see `.env.example`.
+The Docker Compose setup additionally reads `POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD` to configure the `postgres` service — see `.env.example`.
 
 ## Exporting from csTimer
 
