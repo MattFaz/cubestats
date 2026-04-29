@@ -15,6 +15,14 @@ export default defineNuxtConfig({
     optimizeDeps: {
       exclude: ['cubing', 'cubing/scramble', 'cubing/twisty'],
     },
+    // Vite's __vite_preload__ helper accesses document/window. When cubing's
+    // worker entry chunk imports it, the worker crashes with ReferenceError
+    // and all of cubing's worker fallbacks fail. Disabling modulePreload
+    // strips the helper; we lose <link rel="modulepreload"> hints but for a
+    // self-hosted SPA the perf impact is negligible.
+    build: {
+      modulePreload: false,
+    },
   },
   runtimeConfig: {
     databasePath: 'data/cubestats.db',
