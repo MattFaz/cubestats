@@ -1,5 +1,6 @@
 {
   "name": "cubestats",
+  "version": "1.01",
   "type": "module",
   "private": true,
   "license": "MIT",
