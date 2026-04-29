@@ -1,6 +1,6 @@
 # cubestats
 
-A self-hosted stats viewer for [csTimer](https://cstimer.net) exports. Import your csTimer JSON, browse your solve history, and see deeper analytics than the built-in views.
+A self-hosted stats viewer for [csTimer](https://cstimer.net) exports. Import your csTimer JSON, browse your solve history and analytics.
 
 > Not affiliated with csTimer.
 
@@ -82,6 +82,7 @@ A self-hosted stats viewer for [csTimer](https://cstimer.net) exports. Import yo
 ## Features
 
 - **Dashboard** — best/avg5/avg12/avg100 with live filters by session and puzzle type
+- **CSTimer Integration** - Import / Export CSTimer JSON
 - **History** — searchable, sortable solve table with row-level delete
 - **Analytics** — solve-time distribution, calendar heatmap, time-of-day breakdown
 - **Trends** — rolling averages and session comparisons over time
@@ -91,10 +92,6 @@ A self-hosted stats viewer for [csTimer](https://cstimer.net) exports. Import yo
 - **Import** — drag-and-drop csTimer JSON; deduplicates on re-import
 - **Multi-puzzle** — 2x2 through 7x7, megaminx, pyraminx, skewb, square-1
 - **Light & dark mode**
-
-## Stack
-
-Nuxt 4 · Vue 3 · Pinia · Nuxt UI 4 · Tailwind · SQLite + Drizzle ORM · Chart.js · Vitest
 
 ## Quick start (Docker)
 
@@ -121,8 +118,8 @@ services:
     ports:
       - 3000:3000
     environment:
-      - NUXT_AUTH_PASS=<your-password>           # required — server refuses to boot with "changeme", "admin", or "password"
-      - NUXT_AUTH_SECRET=<a-long-random-string>  # required — must not start with "change-this", "dev-secret", or "changeme"
+      - NUXT_AUTH_PASS=<your-password> # required
+      - NUXT_AUTH_SECRET=<a-long-random-string> # required
     volumes:
       - cubestats-data:/app/data
     restart: unless-stopped
@@ -147,12 +144,12 @@ npm run dev
 
 ## Environment variables
 
-| Var                  | Required | Notes                                                                                        |
-| -------------------- | -------- | -------------------------------------------------------------------------------------------- |
-| `NUXT_AUTH_PASS`     | yes      | Login password — refuses to start in production with `changeme`, `admin`, or `password`      |
-| `NUXT_AUTH_SECRET`   | yes      | HMAC secret for the session cookie — refuses to start in production with placeholder values  |
+| Var                  | Required | Notes                                                                                                         |
+| -------------------- | -------- | ------------------------------------------------------------------------------------------------------------- |
+| `NUXT_AUTH_PASS`     | yes      | Login password — refuses to start in production with `changeme`, `admin`, or `password`                       |
+| `NUXT_AUTH_SECRET`   | yes      | HMAC secret for the session cookie — refuses to start in production with placeholder values                   |
 | `NUXT_DATABASE_PATH` | no       | SQLite file path. Defaults to `data/cubestats.db` (locally) or `/app/data/cubestats.db` (in the docker image) |
-| `APP_PORT`           | no       | Defaults to `3000`                                                                           |
+| `APP_PORT`           | no       | Defaults to `3000`                                                                                            |
 
 ## Exporting from csTimer
 

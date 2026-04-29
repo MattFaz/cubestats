@@ -9,6 +9,13 @@ export default defineNuxtConfig({
       isCustomElement: (tag) => tag.startsWith('twisty-'),
     },
   },
+  vite: {
+    // cubing.js ships its own search worker; Vite's dep optimizer mangles it
+    // and serves text/html instead of JS, breaking scramble generation in dev.
+    optimizeDeps: {
+      exclude: ['cubing', 'cubing/scramble', 'cubing/twisty'],
+    },
+  },
   runtimeConfig: {
     databasePath: 'data/cubestats.db',
     authPass: 'changeme',
