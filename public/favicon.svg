@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" shape-rendering="geometricPrecision">
+  <g stroke="#0F172A" stroke-width="6" stroke-linejoin="round">
+    <!-- Top face (white) -->
+    <g fill="#FFFFFF">
+      <polygon points="128,32 160,48 128,64 96,48"/>
+      <polygon points="160,48 192,64 160,80 128,64"/>
+      <polygon points="192,64 224,80 192,96 160,80"/>
+      <polygon points="96,48 128,64 96,80 64,64"/>
+      <polygon points="128,64 160,80 128,96 96,80"/>
+      <polygon points="160,80 192,96 160,112 128,96"/>
+      <polygon points="64,64 96,80 64,96 32,80"/>
+      <polygon points="96,80 128,96 96,112 64,96"/>
+      <polygon points="128,96 160,112 128,128 96,112"/>
+    </g>
+    <!-- Left face (red) -->
+    <g fill="#DC2626">
+      <polygon points="32,80 64,96 64,128 32,112"/>
+      <polygon points="64,96 96,112 96,144 64,128"/>
+      <polygon points="96,112 128,128 128,160 96,144"/>
+      <polygon points="32,112 64,128 64,160 32,144"/>
+      <polygon points="64,128 96,144 96,176 64,160"/>
+      <polygon points="96,144 128,160 128,192 96,176"/>
+      <polygon points="32,144 64,160 64,192 32,176"/>
+      <polygon points="64,160 96,176 96,208 64,192"/>
+      <polygon points="96,176 128,192 128,224 96,208"/>
+    </g>
+    <!-- Right face (green) -->
+    <g fill="#16A34A">
+      <polygon points="128,128 160,112 160,144 128,160"/>
+      <polygon points="160,112 192,96 192,128 160,144"/>
+      <polygon points="192,96 224,80 224,112 192,128"/>
+      <polygon points="128,160 160,144 160,176 128,192"/>
+      <polygon points="160,144 192,128 192,160 160,176"/>
+      <polygon points="192,128 224,112 224,144 192,160"/>
+      <polygon points="128,192 160,176 160,208 128,224"/>
+      <polygon points="160,176 192,160 192,192 160,208"/>
+      <polygon points="192,160 224,144 224,176 192,192"/>
+    </g>
+  </g>
+  <!-- Outer outline (heavier) -->
+  <polygon points="128,32 224,80 224,176 128,224 32,176 32,80"
+           fill="none" stroke="#0F172A" stroke-width="8" stroke-linejoin="round"/>
+</svg>
