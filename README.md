@@ -1,6 +1,10 @@
 # cubestats
 
-A self-hosted stats viewer for [csTimer](https://cstimer.net) exports. Import your csTimer JSON, browse your solve history and analytics.
+<p align="center">
+    <img src="public/favicon.svg" width="200" height="200">
+    <br>
+    <i>Self-hosted speedsolving timer and stats tracker<br>WCA-compliant scrambles, 3D cube preview, analytics, <a href="https://cstimer.net">csTimer</a> import and more</i>
+</p>
 
 > Not affiliated with csTimer.
 
